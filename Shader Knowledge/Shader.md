@@ -145,7 +145,7 @@ e.g:
     - SamplerCUBE：立方体纹理采样器。
 
 
-![[[Pasted image 20231110102233.png](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231110102233.png)]]
+![Shaderlab属性类型和CG变量类型的匹配关系](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231110102233.png)
 
 
 ===***Sampler***=== 类型是用于获取纹理数据的对象，声明与属性的同名纹理变量，就可以让变量获得属性的值
