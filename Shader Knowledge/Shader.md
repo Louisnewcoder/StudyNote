@@ -145,7 +145,7 @@ e.g:
     - SamplerCUBE：立方体纹理采样器。
 
 
-![[Pasted image 20231110102233.png]]
+![Shaderlab属性类型和CG变量类型的匹配关系](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231110102233.png)
 
 
 ===***Sampler***=== 类型是用于获取纹理数据的对象，声明与属性的同名纹理变量，就可以让变量获得属性的值
@@ -234,9 +234,9 @@ SV_TARGET -- 表示告诉渲染器把结果存储到渲染目标
 POSITION -- 用模型空间的顶点坐标（填充它描述的变量的值）
 NORMAL --  用模型空间的法线方向（填充它描述的变量的值）
 TEXCOORD0 -- 用模型空间的法线方向（填充它描述的变量的值）
-![[Pasted image 20231110105028.png]]
+![应用阶段传递模型数据给 vertex shader时 unity支持的常用语义](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231110105028.png?raw=true)
 
-![[Pasted image 20231110105052.png]]
+![从vertex传递给fragment shaderh时unity使用的常用语义](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231110105052.png?raw=true)
 
 
 
@@ -249,10 +249,10 @@ TEXCOORD0 -- 用模型空间的法线方向（填充它描述的变量的值）
 
 
 # UnityShader的Include 文件
-![[Pasted image 20231110102826.png]]
+![Unity \Editor\Data\中的常用文件](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231110102826.png?raw=true)
 
 # Unity内置函数
-![[Pasted image 20231110103549.png]]
+![UnityCG.cginc文件中的常用方法](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231110103549.png?raw=true)
 
 **UnpackNormal()**
 该函数接受一个浮点型的压缩法线向量作为输入，并返回一个三维浮点型的法线向量。
@@ -294,7 +294,7 @@ b.逐顶点数据进行插值，然后逐像素处理。
 （3）调用DrawCall。(CPU向GPU发送一个渲染命令，一个DC会指向本次调用需要渲染的图元列表)
 
 ## GPU流水线
-![[Pasted image 20231030165851.png]]
+![渲染流程](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231030165851.png?raw=true)
 在这个流水线中我个人需要了解的是：
 **顶点着色器（Vertex Shader）**：完全可编程。必须完成的基本工作是，把顶点坐标从***模型空间转换到裁剪空间***。最终得到归一化的设备坐标（Normalized Device Coordinates,NDC）
 顶点着色器调用多少次取决于这个模型有多少个顶点。顶点着色器只操作单个顶点。
@@ -303,16 +303,16 @@ b.逐顶点数据进行插值，然后逐像素处理。
 **几何着色器（Geometry Shader）**：可选着色器， 执行图元的着色操作或生产更多的图元。
 
 **裁剪（Clipping）**：不可编程，可配置。剔除不在摄像机视野内的顶点和三角图元的面片并且创建新的顶点。
-![[Pasted image 20231030170228.png]]
+![Clipping](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231030170228.png?raw=true)
 
 **屏幕映射（Screen Mapping）**：不可配置，不可编程。 将每个图元的坐标转换到屏幕坐标中。
-![[Pasted image 20231030170325.png]]
+![Screen Mappting](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231030170325.png?raw=true)
 
 **片元着色器（Fragment Shader）**：根据上一阶段输出的数据插值得到输入信息。这个阶段则负责染色，输出一个或者多个颜色值。
 所谓片元 ，***就是被模型占据的像素格子（没有被占据的并不称之为片元）
 
 与顶点着色器一样，每次也只处理单个片元
-![[Pasted image 20231030170355.png]]
+![fragment shader working](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231030170355.png?raw=true)
 ps： 我们使用uv 获得贴图采样的目的就是为了方便片元着色器快速处理上色渲染
 也可以在片元着色器中进行光照处理，像在顶点着色器中处理一样， 在片元着色器中处理光照就是 逐像素光照。 
 
@@ -325,7 +325,7 @@ Drawcall就是Cpu调用图像应用程序接口来命令GPU进行渲染操作。
 
 CPU和GPU之间的数据是通过**命令缓冲区**进行传输的。命令缓冲区包含了一个队列，由CPU向其中添加命令，GPU去读取命令，***添加和读取的命令都是相互独立的***。当CPU需要渲染一个对象时，就可以向命令缓冲区中添加命令，而当GPU完成上一个渲染任务后，就会从命令缓冲区中再取出一条命令并执行它。
 *命令缓冲区中的命令还有很多种类，而DrawCall是其中的一种*，其他命令还有改变渲染状态等(例如改变使用的着色器，使用不同的纹理等)。
-![[Pasted image 20231030163042.png]]
+![Coorperation between CPU and GPU](https://github.com/Louisnewcoder/StudyNote/blob/master/Pasted%20image%2020231030163042.png?raw=true)
 蓝色方框内的命令就是Draw Call，而红色方框内的命令用于改变渲染状态。我们使用红色方框来表示改变渲染状态的命令，是因为这些命令往往更加耗时。
 
 ***Drawcall太多会影性能***
