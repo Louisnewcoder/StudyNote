@@ -68,3 +68,50 @@ C#下的区分
 ![[Pasted image 20231209173140.png]]
 
 ## 其他Job相关的知识
+
+### 优化
+1 如果Jobs的代码采用dots框架下的 Unity.Mathematics核心包中的函数进行编写的话，会被编译器优化
+
+### Job类型
+Job有不同的类型
+
+### Job的调度方式
+Run方式 ---- 主线程立即顺序执行
+Schedule方式 ---- 单个工作线程或者主线程按每个Job的顺序，一次执行
+ScheduleParallel ---- 再多个工作线程上同时执行，性能最好。 ==但是多个工作线程访问同一数据时可能胡i发生冲突==
+
+另外，本身名字带有 Parallel的Job类型，只能通过Schedule方式调用，但是功能与ScheduleParallel调度的方式是一样的。这类Job任务会在多个工作线程上同时执行。 *这类Job类型，也不会提供Run和ScheduleParallel的调度方式。*
+
+### Job Dependencies
+当两个Job同时（即使顺序由先后）访问同一个数据并试图堆该数据进行操作时，会产生 Race Condition 的情况。Jobs System的安全检查就会因为这种冲突抛出异常
+![[Pasted image 20231210191203.png]]
+
+为了解决这种冲突， 可以再调度Job B前 将 Job A 进行 Complete()。但是这样不够高效。
+更好的方式是，让理应限制性的Job成为后执行的依赖。==*所谓的依赖，就是 Job执行顺序的先后逻辑条件。 应该先完成的Job是 被依赖方， 需要等待其他Job完成的Job是依赖方*==
+使用 Handle 类型，将JobA的Handle句柄传入 JobB，使 Job A成为Job B的依赖
+![[Pasted image 20231210191558.png]]
+代码示例 情景1: 链式依赖
+![[Pasted image 20231210191727.png]]
+
+代码示例 情景2: 多个Job 依赖同一个Job
+![[Pasted image 20231210191832.png]]
+
+代码示例 情景3: 一个Job 依赖多个Job
+![[Pasted image 20231210191919.png]]
+注: 当需要多个依赖同时存在时，需要用 CombineDependencies()构建一个虚拟的JobHandle
+
+===***重要！！！
+Job依赖必须是无环的， 否则Jobs System的安全检查会报错***===
+
+### Job Safety Checks
+它会进行：
+数据访问冲突检查；
+数据访问越界检查；
+Jobs依赖关系检查；
+内存释放泄露检查；
+如果开启全局安全检查，Jobs System会在出现race condition的情况时抛出异常。仅在编辑器环境下执行。
+![[Pasted image 20231210193032.png]]
+==但是这种安全检查相对严格，比如当 两个Job 访问同一个数据(NativeArray)的不同切片时，这种没有冲突的情况也会抛出异常==
+如果开发者确定某些情况下不会产生 冲突，则可以使用 关闭安全检查标签，来避免这样的问题发生
+![[Pasted image 20231210220627.png]]
+**如果能确定某些数据（Native Array）不会进行任何写入操作的话**，更好的方式是，是使用 `[ReadOnly] 标签
