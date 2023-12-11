@@ -73,3 +73,43 @@ Blittable 类型在许多场景中非常有用，特别是在需要高性能、�
     
 
 总体而言，C# 是一门托管语言，绝大多数情况下开发者不需要直接操作非托管内存。然而，在需要与非托管代码进行交互或执行一些系统级操作时，可以使用上述手段。在这些情况下，需要小心谨慎，确保正确管理内存，以防止内存泄漏和其他问题。
+
+
+# 什么是Burst， Burst Compile
+Unity的一种编译技术，将C#代码编译成高度优化的本地代码(Native代码)，以提高运行时的性能。
+基于LLVM技术 Low-Level Virtual Machine，使用SIMD指定加速数学与向量的运算操作。它使用了多种优化技术，入循环展开，常量传播和内联，以生成高效的机器代码。
+
+这里的Native代码是指特定硬件平台上（承载程序运行的平台）相关的机器码。
+
+一般的代码编译过程是，在.Net 平台中C# 一般会被编译成中间代码，然后在运行时进行JIT编译从而转换为Native代码。而使用Burst技术可以将方法或类直接编译为Native代码，避免了JIT编译的性能损失。从而提高了应用程序的性能。
+
+Unity 安装Burst包之后，只需要使用 Burst Attribute取标记要使用Burst编译的代码即可。
+```C#
+[BusrtCompile]
+public int Calculate(int a ,int b)
+{
+	// example code
+	return a+b;
+}
+```
+
+但是Burst Compile 只适合需要高性能的算发和数学计算的领域，对于复杂的游戏逻辑部分，并不会带来显著的性能提升。===**避免用burst编译包含大量的循环和条件语句等代码结构
+
+**遗憾的是LLVM对C#的GC做的不好，所以Burst只支持值类型的数据编译，不支持引用类型数据编译。**
+Support reading materials:
+https://zhuanlan.zhihu.com/p/623274986
+
+# 什么是SIMD指令
+Single Instruction Multiple Data
+单指令多数据流，即可以使用一条指令同时完成多个数据的运算操作。
+
+Support reading materials:
+https://zhuanlan.zhihu.com/p/556131141
+
+# 什么是LLVM
+Low-Level Virtual Machine
+LLVM不仅仅是一个虚拟机，而是一个综合的编译器工具链。LLVM提供了一套通用的工具和库，用于开发编译器、优化器、代码生成器等。
+LLVM的核心思想是基于中间表示（Intermediate Representation, IR），它定义了一种与机器和语言无关的中间代码表示形式。LLVM IR是一种**低级别的静态单赋值（Static Single Assignment, SSA）形式，它使用基本块和指令的层次结构来表示程序的结构和行为。
+
+Support reading materials:
+https://zhuanlan.zhihu.com/p/629139721
