@@ -21,20 +21,19 @@ ECS 是DOTS 的一部分
 Query相关的内容将会是重点
 
 相关术语：
-![[Pasted image 20231209153128.png]]
-![[Pasted image 20231209152956.png]]
-![[Pasted image 20231209153013.png]]
-![[Pasted image 20231209153028.png]]
-
-![[Pasted image 20231209153046.png]]
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209153128.png)
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209152956.png)
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209153013.png)
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209153028.png)
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209153046.png)
 
 # 工具包与环境
 
 ## package
 ### 核心包
 Entities -- 安装完成后，会在editor的 preferences里面多出 一个 Entities 选项标签，以及一个 Jobs 选项标签
-![[Pasted image 20231209154326.png]]
-![[Pasted image 20231209154412.png]]
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209154326.png)
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209154412.png)
 
 
 
@@ -58,15 +57,15 @@ Race Conditions的情况  <--- 什么是 ===Race Conditions=== 据说手写代�
 关于托管内存和非托管内存 与托管类型和非托管类型 [[DOTS 相关提到的额外的我不知道的知识点#托管堆数据和非托管堆数据]]
 *什么是Blittable [[DOTS 相关提到的额外的我不知道的知识点#Blittable 数据类型]]*
 C#下的区分
-![[Pasted image 20231209171051.png]]
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209171051.png)
 这里要注意的是 C#中的 bool 占4个自建 C++中1个字节。不一样，需要做转化。 如果没有进行转化，那么程序不会崩溃，但是可能会有异常表现。
 
 在写Job程序时除了使用Blittable类型外，还可以使用C++上的非托管内存堆数据。但是需要使用另一个DOTS核心包 Collections.NativeContainer,以及Unity为特殊用途下特殊内容，特殊定制的一些类型
-![[Pasted image 20231209172927.png]]
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209172927.png)
 这些容器都是非托管堆上分配的
-![[Pasted image 20231209173030.png]]
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209173030.png)
 这些类型容器在创建时还会涉及分配类型的设置
-![[Pasted image 20231209173140.png]]
+![](https://github.com/Louisnewcoder/StudyNote/blob/master/DOTS/DOTS%20Study%20Note/Pasted%20image%2020231209173140.png)
 
 ## 其他Job相关的知识
 
